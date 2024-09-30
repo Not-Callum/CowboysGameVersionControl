@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://dj0434gukpii1"]
+
+[ext_resource type="Script" path="res://Weapons/revolver_held.gd" id="1_6f5hv"]
+[ext_resource type="Texture2D" uid="uid://delt4uq1ypyge" path="res://Weapons/revolver_held.png" id="1_tmuah"]
+[ext_resource type="Texture2D" uid="uid://cu76jeoqf1tox" path="res://Weapons/hand.png" id="2_w2icq"]
+[ext_resource type="PackedScene" uid="uid://bheexrwmv230r" path="res://ammunition_component.tscn" id="3_ag624"]
+
+[node name="RevolverHeld" type="Node2D" node_paths=PackedStringArray("AmmoComponent")]
+position = Vector2(4, 0)
+script = ExtResource("1_6f5hv")
+AmmoComponent = NodePath("AmmunitionComponent")
+
+[node name="Revolver" type="Sprite2D" parent="."]
+texture = ExtResource("1_tmuah")
+
+[node name="Hand" type="Sprite2D" parent="."]
+position = Vector2(-3, 2)
+texture = ExtResource("2_w2icq")
+
+[node name="AmmunitionComponent" parent="." instance=ExtResource("3_ag624")]
+MAX_AMMO = 20

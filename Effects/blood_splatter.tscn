@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://coif3g0exjcvi"]
+
+[ext_resource type="Script" path="res://Effects/blood_splatter.gd" id="1_tgrf1"]
+
+[sub_resource type="Curve" id="Curve_ga2d3"]
+_data = [Vector2(0.0505618, 1), 0.0, 0.677684, 0, 0, Vector2(1, 0.197802), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_pb0ut"]
+offsets = PackedFloat32Array(0, 0.02, 0.473333, 0.972527)
+colors = PackedColorArray(0, 0, 0, 1, 0.6071, 0.0253073, 0.0276676, 1, 1, 0.518123, 0.45217, 1, 1, 0.514167, 0.45, 0)
+
+[node name="BloodSplatter" type="Node2D"]
+script = ExtResource("1_tgrf1")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+scale = Vector2(0.6, 0.6)
+emitting = false
+amount = 45
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 60.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_ga2d3")
+color = Color(0.701135, 0, 0.141707, 1)
+color_ramp = SubResource("Gradient_pb0ut")

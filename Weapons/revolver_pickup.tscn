@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://e5euu1pcg27x"]
+
+[ext_resource type="Script" path="res://Weapons/revolver_pickup.gd" id="1_faslw"]
+[ext_resource type="Texture2D" uid="uid://cp2g1y128tqt0" path="res://Weapons/revolver.png" id="1_wm00e"]
+[ext_resource type="PackedScene" uid="uid://cbc380nwix1tj" path="res://Player/Lasso/lasso_end.tscn" id="2_nr0pq"]
+[ext_resource type="PackedScene" uid="uid://cvhj8pkltpbe2" path="res://Interactions/pickup.tscn" id="4_pkwjj"]
+[ext_resource type="Script" path="res://ammunition_component.gd" id="5_4se8a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hbqhn"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0a1um"]
+radius = 5.02494
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2reba"]
+
+[node name="RevolverPickup" type="CharacterBody2D" node_paths=PackedStringArray("AmmoComponent")]
+collision_mask = 8
+script = ExtResource("1_faslw")
+AmmoComponent = NodePath("AmmunitionComponent")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_wm00e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_hbqhn")
+
+[node name="LassoEnd" parent="." groups=["Lassoable"] instance=ExtResource("2_nr0pq")]
+
+[node name="Area2D" parent="LassoEnd" index="2"]
+collision_mask = 16
+
+[node name="CollisionShape2D" parent="LassoEnd/Area2D" index="0"]
+shape = SubResource("CircleShape2D_0a1um")
+
+[node name="PickupWeapon" parent="." node_paths=PackedStringArray("ammoStored") instance=ExtResource("4_pkwjj")]
+collision_layer = 2
+collision_mask = 8
+ammoStored = NodePath("../AmmunitionComponent")
+
+[node name="CollisionShape2D" parent="PickupWeapon" index="0"]
+shape = SubResource("CircleShape2D_2reba")
+
+[node name="AmmunitionComponent" type="Node2D" parent="."]
+script = ExtResource("5_4se8a")
+MAX_AMMO = 20
+
+[connection signal="CaughtByLasso" from="LassoEnd" to="." method="_on_lasso_end_caught_by_lasso"]
+[connection signal="PulledByLasso" from="LassoEnd" to="." method="_on_lasso_end_pulled_by_lasso"]
+[connection signal="area_entered" from="PickupWeapon" to="PickupWeapon" method="_on_area_entered"]
+[connection signal="area_exited" from="PickupWeapon" to="PickupWeapon" method="_on_area_exited"]
+
+[editable path="LassoEnd"]
+[editable path="PickupWeapon"]

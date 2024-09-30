@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://b25oo2p083p11"]
+
+[ext_resource type="Script" path="res://Weapons/repeater.gd" id="1_p51xf"]
+[ext_resource type="Texture2D" uid="uid://bmwb1d06pg1yt" path="res://Weapons/Repeater/repeater.png" id="2_78mcc"]
+[ext_resource type="PackedScene" uid="uid://cbc380nwix1tj" path="res://Player/Lasso/lasso_end.tscn" id="2_ufde6"]
+[ext_resource type="PackedScene" uid="uid://cvhj8pkltpbe2" path="res://Interactions/pickup.tscn" id="3_v4s7t"]
+[ext_resource type="PackedScene" uid="uid://bheexrwmv230r" path="res://ammunition_component.tscn" id="4_0x34y"]
+[ext_resource type="Texture2D" uid="uid://cu76jeoqf1tox" path="res://Weapons/hand.png" id="6_tlhp8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_axqsj"]
+size = Vector2(24, 5)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e3mml"]
+radius = 2.5
+height = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_42puk"]
+radius = 13.0
+
+[node name="Repeater" type="CharacterBody2D"]
+collision_mask = 8
+script = ExtResource("1_p51xf")
+metadata/AmmoType = "Rifle"
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(11, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_axqsj")
+
+[node name="Repeater" type="Sprite2D" parent="."]
+texture = ExtResource("2_78mcc")
+hframes = 2
+frame = 1
+
+[node name="LassoEnd" parent="." groups=["Lassoable"] instance=ExtResource("2_ufde6")]
+
+[node name="Area2D" parent="LassoEnd" index="2"]
+collision_mask = 16
+
+[node name="CollisionShape2D" parent="LassoEnd/Area2D" index="0"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_e3mml")
+
+[node name="Pickup" parent="." instance=ExtResource("3_v4s7t")]
+collision_layer = 2
+collision_mask = 8
+
+[node name="CollisionShape2D" parent="Pickup" index="0"]
+shape = SubResource("CircleShape2D_42puk")
+
+[node name="AmmunitionComponent" parent="." instance=ExtResource("4_0x34y")]
+MAX_AMMO = 7
+
+[node name="Hand" type="Sprite2D" parent="."]
+position = Vector2(1, 0)
+texture = ExtResource("6_tlhp8")
+
+[node name="ShootSpeedTimer" type="Timer" parent="."]
+
+[connection signal="area_entered" from="Pickup" to="Pickup" method="_on_area_entered"]
+[connection signal="area_exited" from="Pickup" to="Pickup" method="_on_area_exited"]
+[connection signal="timeout" from="ShootSpeedTimer" to="." method="_on_shoot_speed_timer_timeout"]
+
+[editable path="LassoEnd"]
+[editable path="Pickup"]

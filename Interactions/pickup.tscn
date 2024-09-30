@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvhj8pkltpbe2"]
+
+[ext_resource type="Script" path="res://Interactions/pickup.gd" id="1_sjqyj"]
+[ext_resource type="Texture2D" uid="uid://b6hg7drg87me4" path="res://Weapons/highlight-export.png" id="2_jdwi8"]
+
+[node name="Pickup" type="Area2D" groups=["item"]]
+z_index = -1
+script = ExtResource("1_sjqyj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Highlight" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_jdwi8")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfp7e8hyjsv8p"]
+
+[ext_resource type="PackedScene" uid="uid://b66bum14lrhmo" path="res://Player/player.tscn" id="1_5gphn"]
+[ext_resource type="Script" path="res://world.gd" id="1_uy6ob"]
+[ext_resource type="PackedScene" uid="uid://krbgn0hjnyhc" path="res://Enemies/enemy.tscn" id="2_2u8wc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_al5qc"]
+size = Vector2(8, 87)
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_uy6ob")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(124, 62)
+position_smoothing_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_5gphn")]
+position = Vector2(124, 62)
+
+[node name="RemoteTransform2D" parent="Player" index="3"]
+remote_path = NodePath("../../Camera2D")
+
+[node name="Node2D" type="StaticBody2D" parent="."]
+collision_layer = 4
+
+[node name="ColorRect" type="ColorRect" parent="Node2D"]
+offset_left = 78.0
+offset_top = 1.0
+offset_right = 86.0
+offset_bottom = 88.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D"]
+position = Vector2(82, 44.5)
+shape = SubResource("RectangleShape2D_al5qc")
+
+[node name="Enemy" parent="." instance=ExtResource("2_2u8wc")]
+position = Vector2(149, 32)
+
+[connection signal="LassoThrown" from="Player" to="." method="_on_player_lasso_thrown"]
+
+[editable path="Player"]
+[editable path="Enemy"]
+[editable path="Enemy/Hurtbox"]
+[editable path="Enemy/LassoEnd"]

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpguv84llst3i"]
+
+[ext_resource type="Script" path="res://Effects/draw_line.gd" id="1_m5y3f"]
+
+[node name="DrawLine" type="Line2D"]
+width = 1.0
+default_color = Color(0.682353, 0.286275, 0.156863, 1)
+script = ExtResource("1_m5y3f")

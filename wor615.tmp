@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfp7e8hyjsv8p"]
+
+[ext_resource type="PackedScene" uid="uid://b66bum14lrhmo" path="res://Player/player.tscn" id="1_5gphn"]
+[ext_resource type="Script" path="res://world.gd" id="1_uy6ob"]
+[ext_resource type="PackedScene" uid="uid://krbgn0hjnyhc" path="res://Enemies/enemy.tscn" id="2_2u8wc"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_uy6ob")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(124, 62)
+position_smoothing_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_5gphn")]
+position = Vector2(124, 62)
+
+[node name="RemoteTransform2D" parent="Player" index="3"]
+remote_path = NodePath("../../Camera2D")
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_2u8wc")]
+position = Vector2(166, 41)
+collision_layer = 2
+collision_mask = 2
+player = NodePath("../Player")
+
+[connection signal="LassoThrown" from="Player" to="." method="_on_player_lasso_thrown"]
+
+[editable path="Player"]
