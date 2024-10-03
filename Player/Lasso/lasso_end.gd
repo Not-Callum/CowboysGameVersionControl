@@ -66,17 +66,17 @@ func disconnectLasso():
 	state = UNTIED
 
 func get_pulled_to_player():
-	print("yank received")
+	#print("yank received")
 	
 	if state == TIED:
 		#rint("yanked")
 		var direction = (player.global_position - myParent.global_position).normalized()
-		myParent.velocity = myParent.velocity.move_toward(direction * LASSO_SPEED, LASSO_ACCELERATION)
+		myParent.velocity = myParent.velocity + (direction * LASSO_SPEED)
 		self.hide()
 		SignalHandler.Untied.emit()
 		state = PULLED
 		
 func get_slight_pull_to_player():
 	var direction = (player.global_position - myParent.global_position).normalized()
-	myParent.velocity = myParent.velocity.move_toward(direction * 70, LASSO_SPEED)
+	myParent.velocity = myParent.velocity + (direction * 30)
 	

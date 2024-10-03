@@ -22,7 +22,7 @@ script = ExtResource("1_wk7hb")
 metadata/AmmoType = "Pistol"
 
 [node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(3, 0)
+position = Vector2(5, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_khjap")

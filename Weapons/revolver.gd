@@ -84,6 +84,7 @@ func shoot():
 		bulletInstance.global_rotation = $Marker2D.global_rotation + randf_range(-0.15, 0.15)
 		bulletInstance.damage = 35.0
 		bulletInstance.speed = 400.0
+		bulletInstance.knockback = 6.0
 		print(ammunition_component.ammo)
 		
 		

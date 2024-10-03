@@ -15,6 +15,7 @@ const FRICITON = 300
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var soft_collision: Area2D = $SoftCollision
 @onready var break_free_timer: Timer = $BreakFreeTimer
+@onready var health_component: HealthComponent = $HealthComponent
 
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 @onready var lasso_end: CharacterBody2D = $LassoEnd
@@ -43,10 +44,11 @@ func _ready() -> void:
 	add_to_group("Enemy")
 	#lasso_end.hide()
 	lasso_end.CaughtByLasso.connect(just_caught_by_lasso)
+	health_component.hit.connect(got_shot)
 	
 func _physics_process(delta: float) -> void:
 	
-	if player_search_area.get_overlapping_bodies() and state != YANKED and state != TIED:
+	if player_search_area.get_overlapping_bodies() and state != YANKED and state != TIED and state != STUNNED:
 		var bodies = player_search_area.get_overlapping_bodies()
 		for i in bodies:
 			if i.is_in_group("Player"):
@@ -70,6 +72,7 @@ func _physics_process(delta: float) -> void:
 		YANKED:
 			yanked_state(delta)
 		STUNNED:
+			
 			stunned_state(delta)
 			
 	if velocity != Vector2.ZERO:
@@ -90,6 +93,8 @@ func idle_state(delta):
 		var current_agent_position = global_position
 		var next_path_position = nav_agent.get_next_path_position()
 		velocity = current_agent_position.direction_to(next_path_position) * SPEED
+	elif target != null:
+		state = SEEKING
 	else:
 		velocity = Vector2.ZERO
 
@@ -143,13 +148,16 @@ func just_caught_by_lasso():
 	state = TIED
 	break_free_timer.start(randi_range(4,12))
 	
+func got_shot():
+	
+	state = STUNNED
 
 func tied_state(delta):
 	pass
 	
 	
 func yanked_state(delta):
-	print(velocity.length())
+	#print(velocity.length())
 	var collision_info = get_last_slide_collision()
 	
 	if collision_info:
@@ -174,8 +182,10 @@ func yanked_state(delta):
 	state = IDLE
 	
 func stunned_state(delta):
-	await get_tree().create_timer(0.5).timeout
-	state = IDLE
+	print(state)
+	await get_tree().create_timer(0.3).timeout
+	target = get_tree().get_first_node_in_group("Player")
+	state = PERSUE
 
 
 func _on_lasso_end_pulled_by_lasso() -> void:

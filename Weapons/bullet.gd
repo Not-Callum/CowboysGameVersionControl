@@ -2,8 +2,8 @@ extends Area2D
 
 
 @export var speed = 600
-@export var damage := 35.0
-@export var knockback := 20.0
+@export var damage = 35.0
+@export var knockback = 12.5
 
 
 func _physics_process(delta: float) -> void:
