@@ -16,6 +16,7 @@ enum {
 @onready var ammunition_component: Node2D = $AmmunitionComponent
 
 @onready var pickup: Area2D = $Pickup
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 
@@ -97,7 +98,7 @@ func shoot():
 			bulletInstance.speed = bulletSpeed + randf_range(-50, 25)
 			bulletInstance.damage = weapon_damage
 			bulletInstance.knockback = 4.0
-		
+			animation_player.play("shot")
 		
 
 

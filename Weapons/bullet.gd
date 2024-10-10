@@ -13,8 +13,7 @@ func _physics_process(delta: float) -> void:
 	
 func _on_area_entered(area: Area2D) -> void:
 	var groups = get_groups()
-	var group = groups[0]
-	if area.has_method("damage") and !area.is_in_group(group):
+	if area.has_method("damage") and !area.is_in_group(groups[0]):
 		var attack = Attack.new()
 		attack.attack_damage = damage
 		attack.knockback_force = knockback

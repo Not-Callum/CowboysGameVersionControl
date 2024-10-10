@@ -7,6 +7,7 @@ enum {
 @onready var lasso_end: Area2D = $LassoEnd/Area2D
 @onready var lasso_endnode: CharacterBody2D = $LassoEnd
 @onready var main = GlobalReferences.main
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 @onready var revolver_sprite: Sprite2D = $RevolverSprite
@@ -91,8 +92,10 @@ func shoot():
 		bulletInstance.damage = weapon_damage
 		bulletInstance.speed = bulletSpeed
 		bulletInstance.knockback = 6.0
-		print(ammunition_component.ammo)
+		animation_player.play("shot")
 		
+
+	
 		
 
 

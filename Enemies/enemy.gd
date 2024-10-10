@@ -236,7 +236,8 @@ func enemy_look_at_player():
 		hand.rotation = get_angle_to(final_aim_point) + deg_to_rad(target_velocity.x * 0.15)
 		check_hand_scale(target.global_position)
 		if held_weapon.shootable == true and held_weapon.ammunition_component.ammo > 0 and state != TIED and state != STUNNED and state != YANKED:
-			shoot()
+			if global_position.distance_to(target.global_position) <= 120:
+				shoot()
 		elif held_weapon.ammunition_component.ammo == 0:
 			reload()
 	elif last_position != null:
@@ -262,7 +263,6 @@ func check_hand_scale(object_position):
 		hand.y_sort_enabled = false
 		hand.z_index = 1
 
-#-2.5 -0.7
 func give_weapon(weapon):
 	if weapon == null:
 		print_debug("No Weapon To Give")

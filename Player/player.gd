@@ -189,6 +189,7 @@ func shoot_weapon():
 	weapon.shoot()
 	
 	
+	
 func addWeapon(weapon):
 	
 	if weapon_held.get_child_count() == 0:
@@ -210,6 +211,7 @@ func addWeapon(weapon):
 		weapon.global_position = weapon_held.global_position
 		weapon.global_rotation = weapon_held.global_rotation
 		weapon.pickedUp()
+		weapon.group_name = "Player"
 		hasWeapon = true
 		canShoot = true
 		ammo_type = weapon.get_bullet_type()
