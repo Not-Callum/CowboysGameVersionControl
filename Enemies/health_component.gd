@@ -23,9 +23,12 @@ func damage(attack: Attack):
 	#velocity = (global_position - attack.attack_position).normalized() * attack.knockback_force
 	
 	elif health <= 0:
-		print("I die")
 		SignalHandler.doCameraShake.emit(4.0, 7.0)
-		get_parent().queue_free()
-		var bloodSplatter_instance = bloodSplatter.instantiate()
-		bloodSplatter_instance.global_position = global_position
-		main.add_child.call_deferred(bloodSplatter_instance)
+		if !myParent.is_in_group("Player"):
+			get_parent().queue_free()
+			var bloodSplatter_instance = bloodSplatter.instantiate()
+			bloodSplatter_instance.global_position = global_position
+			main.add_child.call_deferred(bloodSplatter_instance)
+		else:
+			myParent.visible = false
+			myParent.die()

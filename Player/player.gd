@@ -8,13 +8,15 @@ class_name Player
 @onready var weapon_held: Marker2D = $Hand
 @onready var hitbox: Area2D = $Hitbox
 @onready var player_inventory: Node2D = $PlayerInventory
+@onready var lasso_timer: Timer = $LassoTimer
 
 signal LassoThrown
 signal Yanked()
 
 enum{
 	MOVE,
-	DODGE
+	DODGE,
+	DEAD,
 }
 
 var DODGE_SPEED = 100
@@ -32,6 +34,7 @@ var hasWeapon : bool
 var canShoot : bool
 var state = MOVE
 var ammo_type
+var reload_speed : float
 
 func _ready() -> void:
 	canShoot = false
@@ -47,6 +50,8 @@ func _physics_process(delta: float) -> void:
 			dodge_state(delta)
 			if Input.is_action_just_pressed("cancel"):
 				state = MOVE
+		DEAD:
+			get_tree().paused = true
 	
 	var mouse_position = get_global_mouse_position()
 	if state == MOVE:
@@ -88,7 +93,8 @@ func _input(event: InputEvent) -> void:
 		emit_signal("LassoThrown")
 	elif Input.is_action_just_released("ability") and LASSOEQUIPPED == false:
 		emit_signal("Yanked")
-		print("yank sent")
+		LASSOCOOLDOWN = false
+		lasso_timer.start(1.2)
 	elif Input.is_action_just_pressed("cancel") and LASSOEQUIPPED == false:
 		SignalHandler.cancelledAbility.emit()
 	if Input.is_action_just_pressed("shoot"):
@@ -101,7 +107,7 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_released("reload") and hasWeapon == true:
 		print("reloading")
 		canShoot = false
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(reload_speed).timeout
 		reload_weapon()
 		canShoot = true
 		print("reloaded")
@@ -139,7 +145,6 @@ func trackMouse(mouse_rotation):
 		weapon_held.scale.y = 1
 
 func throwLasso():
-	#LASSOCOOLDOWN = false
 	LASSOEQUIPPED = false
 	MAX_SPEED = MAX_SPEED * 0.75
 	DODGE_SPEED = DODGE_SPEED * 0.8
@@ -147,6 +152,7 @@ func throwLasso():
 	lasso_instance.rotation = weapon_held.rotation
 	lasso_instance.global_position = weapon_held.global_position
 	main.add_child.call_deferred(lasso_instance)
+	
 	
 func giveLasso():
 	await get_tree().create_timer(0.5).timeout
@@ -192,9 +198,11 @@ func addWeapon(weapon):
 		weapon.global_position = weapon_held.global_position
 		weapon.global_rotation = weapon_held.global_rotation
 		weapon.pickedUp()
+		weapon.group_name = "Player"
 		hasWeapon = true
 		canShoot = true
 		ammo_type = weapon.get_bullet_type()
+		reload_speed = weapon.weapon_reload_speed
 	elif weapon_held.get_child_count() == 1:
 		
 		throwWeapon()
@@ -205,3 +213,11 @@ func addWeapon(weapon):
 		hasWeapon = true
 		canShoot = true
 		ammo_type = weapon.get_bullet_type()
+		
+
+func die():
+	state = DEAD
+
+func _on_lasso_timer_timeout() -> void:
+	print("lasso ready")
+	LASSOCOOLDOWN = true

@@ -20,6 +20,9 @@ radius = 13.0
 [node name="Repeater" type="CharacterBody2D"]
 collision_mask = 8
 script = ExtResource("1_p51xf")
+bulletSpeed = 500.0
+random_spread = 0.1
+weapon_damage = 70.0
 metadata/AmmoType = "Rifle"
 
 [node name="Marker2D" type="Marker2D" parent="."]

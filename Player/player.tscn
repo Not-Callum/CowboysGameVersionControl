@@ -103,10 +103,11 @@ z_index = -1
 position = Vector2(-1, 2)
 texture = ExtResource("2_mnc1v")
 
-[node name="Hitbox" parent="." instance=ExtResource("4_qpdk4")]
+[node name="Hitbox" parent="." node_paths=PackedStringArray("health_component") groups=["Player"] instance=ExtResource("4_qpdk4")]
 visible = true
-collision_layer = 9
+collision_layer = 41
 collision_mask = 2
+health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" parent="Hitbox" index="0"]
 shape = SubResource("CapsuleShape2D_f7vy0")
@@ -120,11 +121,16 @@ script = ExtResource("5_hv8ie")
 shape = SubResource("CircleShape2D_nyadd")
 
 [node name="HealthComponent" parent="." instance=ExtResource("6_6b7mg")]
+MAX_HEALTH = 200.0
 
 [node name="PlayerInventory" type="Node2D" parent="."]
 script = ExtResource("7_pj102")
 
+[node name="LassoTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="area_entered" from="InteractArea" to="InteractArea" method="_on_area_entered"]
 [connection signal="area_exited" from="InteractArea" to="InteractArea" method="_on_area_exited"]
+[connection signal="timeout" from="LassoTimer" to="." method="_on_lasso_timer_timeout"]
 
 [editable path="Hitbox"]

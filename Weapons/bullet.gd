@@ -6,12 +6,15 @@ extends Area2D
 @export var knockback = 12.5
 
 
+
 func _physics_process(delta: float) -> void:
 	var direction = Vector2.RIGHT.rotated(rotation)
 	position += direction * speed * delta
 	
 func _on_area_entered(area: Area2D) -> void:
-	if area.has_method("damage"):
+	var groups = get_groups()
+	var group = groups[0]
+	if area.has_method("damage") and !area.is_in_group(group):
 		var attack = Attack.new()
 		attack.attack_damage = damage
 		attack.knockback_force = knockback

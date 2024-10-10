@@ -15,13 +15,18 @@ enum {
 @onready var pickup: Area2D = $Pickup
 
 
-var shootSpeed = 0.1
+var shootSpeed = 0.4
 var bulletDirection = Vector2(1,0)
 var FRICITON = 300
 var bullet = preload("res://Weapons/bullet.tscn")
 var states
 var shootable = true
 var lassoed = false
+var group_name : String
+@export var weapon_reload_speed = 0.6
+@export var bulletSpeed : float
+@export var random_spread : float
+@export var weapon_damage : float
 
 func _ready() -> void:
 	states = OnGround
@@ -76,14 +81,15 @@ func reload(ammo):
 func shoot():
 	if shootable == true and ammunition_component.ammo >= 1:
 		shootable = false
-		$ShootSpeedTimer.start(0.4)
+		$ShootSpeedTimer.start(shootSpeed)
 		ammunition_component.shot()
 		var bulletInstance = bullet.instantiate()
 		main.add_child.call_deferred(bulletInstance)
+		bulletInstance.add_to_group(group_name)
 		bulletInstance.global_position = $Marker2D.global_position
-		bulletInstance.global_rotation = $Marker2D.global_rotation + randf_range(-0.15, 0.15)
-		bulletInstance.damage = 35.0
-		bulletInstance.speed = 400.0
+		bulletInstance.global_rotation = $Marker2D.global_rotation + randf_range(-random_spread, random_spread)
+		bulletInstance.damage = weapon_damage
+		bulletInstance.speed = bulletSpeed
 		bulletInstance.knockback = 6.0
 		print(ammunition_component.ammo)
 		

@@ -16,6 +16,8 @@ const FRICITON = 300
 @onready var soft_collision: Area2D = $SoftCollision
 @onready var break_free_timer: Timer = $BreakFreeTimer
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var hand: Marker2D = $Hand
+
 
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 @onready var lasso_end: CharacterBody2D = $LassoEnd
@@ -26,6 +28,7 @@ var spawnPoint
 var SPEED = 40
 var last_position = null
 var random_distance_offset = randi_range(-10, 10)
+var held_weapon
 enum {
 	IDLE,
 	MOVE,
@@ -39,6 +42,7 @@ enum {
 var state = MOVE
 
 func _ready() -> void:
+	randomize()
 	spawnPoint = global_position
 	var enemy = Enemy.new()
 	add_to_group("Enemy")
@@ -46,6 +50,7 @@ func _ready() -> void:
 	lasso_end.CaughtByLasso.connect(just_caught_by_lasso)
 	health_component.hit.connect(got_shot)
 	
+
 func _physics_process(delta: float) -> void:
 	
 	if player_search_area.get_overlapping_bodies() and state != YANKED and state != TIED and state != STUNNED:
@@ -84,7 +89,12 @@ func _physics_process(delta: float) -> void:
 		print("I am colliding softly")
 		velocity += soft_collision.get_push_vector() * delta * 400
 	
+	enemy_look_at_player()
 	velocity = velocity.move_toward(Vector2.ZERO, FRICITON * delta)
+	if velocity.x < 0:
+		sprite_2d.flip_h = true
+	elif velocity.x > 0:
+		sprite_2d.flip_h = false
 	move_and_slide()
 
 func idle_state(delta):
@@ -93,10 +103,15 @@ func idle_state(delta):
 		var current_agent_position = global_position
 		var next_path_position = nav_agent.get_next_path_position()
 		velocity = current_agent_position.direction_to(next_path_position) * SPEED
+		hand.look_at(next_path_position)
+		check_hand_scale(next_path_position)
 	elif target != null:
 		state = SEEKING
 	else:
 		velocity = Vector2.ZERO
+		
+	if held_weapon.ammunition_component.ammo < held_weapon.ammunition_component.MAX_AMMO:
+			reload()
 
 func move_state(delta):
 	pass
@@ -105,11 +120,13 @@ func seeking_state(delta):
 	if nav_agent.is_navigation_finished():
 		last_position = null
 	if last_position != null:
+		target = null
 		nav_agent.target_position = last_position
 		var current_agent_position = global_position
 		var next_path_position = nav_agent.get_next_path_position()
 		velocity = current_agent_position.direction_to(next_path_position) * SPEED
 	else:
+		target = null
 		velocity = velocity.move_toward(Vector2.ZERO, FRICITON * delta)
 		await get_tree().create_timer(5).timeout
 		state = IDLE
@@ -131,14 +148,9 @@ func persue_state(delta):
 		velocity = velocity.move_toward(direction * SPEED, 400)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICITON * delta)
-	
-	if velocity.x < 0:
-		sprite_2d.flip_h = true
-	else:
-		sprite_2d.flip_h = false
-	
-	
 		
+	##decide to shoot here
+	
 	
 func seeking_setup():
 	await get_tree().physics_frame
@@ -214,3 +226,60 @@ func _on_break_free_timer_timeout() -> void:
 	if state == TIED:
 		SignalHandler.cancelledAbility.emit()
 		state = IDLE
+
+func enemy_look_at_player():
+	
+	if target != null:
+		var target_velocity = target.velocity
+		var distance_to_player = global_position.distance_to(target.global_position)
+		var final_aim_point = target.global_position + target_velocity * (distance_to_player/held_weapon.bulletSpeed)
+		hand.rotation = get_angle_to(final_aim_point) + deg_to_rad(target_velocity.x * 0.15)
+		check_hand_scale(target.global_position)
+		if held_weapon.shootable == true and held_weapon.ammunition_component.ammo > 0 and state != TIED and state != STUNNED and state != YANKED:
+			shoot()
+		elif held_weapon.ammunition_component.ammo == 0:
+			reload()
+	elif last_position != null:
+		hand.look_at(last_position)
+		check_hand_scale(last_position)
+	else:
+		pass
+		
+	
+func check_hand_scale(object_position):
+	var body_to_player_angle = get_angle_to(object_position)
+	
+	if body_to_player_angle <= 1.53 and body_to_player_angle >= -1.62:
+		hand.scale.y = 1
+	else:
+		hand.scale.y = -1
+	if body_to_player_angle <= -0.7 and body_to_player_angle >= -2.5:
+		sprite_2d.frame = 1
+		hand.y_sort_enabled = true
+		hand.z_index = -1
+	else:
+		sprite_2d.frame = 0
+		hand.y_sort_enabled = false
+		hand.z_index = 1
+
+#-2.5 -0.7
+func give_weapon(weapon):
+	if weapon == null:
+		print_debug("No Weapon To Give")
+	else:
+		var weaponInstance = weapon.instantiate()
+		hand.add_child.call_deferred(weaponInstance)
+		weaponInstance.pickedUp.call_deferred()
+		weaponInstance.bulletSpeed = weaponInstance.bulletSpeed / 2
+		weaponInstance.random_spread = weaponInstance.random_spread * 2
+		weaponInstance.shootSpeed = 1
+		weaponInstance.weapon_damage = weaponInstance.weapon_damage * 0.5
+		weaponInstance.group_name = "Enemy"
+		held_weapon = weaponInstance
+		
+		
+func shoot():
+	held_weapon.shoot()
+	
+func reload():
+	held_weapon.reload(held_weapon.ammunition_component.MAX_AMMO)

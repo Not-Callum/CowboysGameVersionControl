@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://dfp7e8hyjsv8p"]
+[gd_scene load_steps=13 format=3 uid="uid://dfp7e8hyjsv8p"]
 
 [ext_resource type="PackedScene" uid="uid://b66bum14lrhmo" path="res://Player/player.tscn" id="1_5gphn"]
 [ext_resource type="Script" path="res://world.gd" id="1_uy6ob"]
-[ext_resource type="PackedScene" uid="uid://krbgn0hjnyhc" path="res://Enemies/enemy.tscn" id="2_2u8wc"]
 [ext_resource type="Texture2D" uid="uid://ckholobpl8ytk" path="res://World/saloontileset.png" id="2_nodgx"]
 [ext_resource type="Script" path="res://camera_2d.gd" id="3_vcboc"]
 [ext_resource type="PackedScene" uid="uid://cen2ju3yrkasi" path="res://Weapons/revolver.tscn" id="6_unbx1"]
 [ext_resource type="PackedScene" uid="uid://b25oo2p083p11" path="res://Weapons/repeater.tscn" id="7_vw6q8"]
+[ext_resource type="PackedScene" uid="uid://den4py8urdr6h" path="res://Enemies/enemy_spawn_point.tscn" id="8_65tpu"]
+[ext_resource type="PackedScene" uid="uid://d0kconcmboikf" path="res://Weapons/Shotgun/shotgun.tscn" id="8_dvcyu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7bnar"]
 
@@ -139,14 +140,14 @@ remote_path = NodePath("../../Camera2D")
 [node name="Node2D2" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Enemy2" parent="Node2D2" instance=ExtResource("2_2u8wc")]
-position = Vector2(262, 62)
+[node name="EnemySpawnPoint" parent="Node2D2" instance=ExtResource("8_65tpu")]
+position = Vector2(235, -56)
 
-[node name="Enemy3" parent="Node2D2" instance=ExtResource("2_2u8wc")]
-position = Vector2(250, -6)
+[node name="EnemySpawnPoint2" parent="Node2D2" instance=ExtResource("8_65tpu")]
+position = Vector2(244, 20)
 
-[node name="Enemy" parent="Node2D2" instance=ExtResource("2_2u8wc")]
-position = Vector2(58, 56)
+[node name="EnemySpawnPoint3" parent="Node2D2" instance=ExtResource("8_65tpu")]
+position = Vector2(118, 50)
 
 [node name="revolver" parent="." instance=ExtResource("6_unbx1")]
 position = Vector2(273, -59)
@@ -163,6 +164,9 @@ position = Vector2(179, -62)
 
 [node name="Repeater" parent="." instance=ExtResource("7_vw6q8")]
 position = Vector2(82, 21)
+
+[node name="Shotgun" parent="." instance=ExtResource("8_dvcyu")]
+position = Vector2(156, -35)
 
 [connection signal="LassoThrown" from="Player" to="." method="_on_player_lasso_thrown"]
 

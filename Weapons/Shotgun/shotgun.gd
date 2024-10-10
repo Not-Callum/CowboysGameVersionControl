@@ -9,7 +9,7 @@ enum {
 @onready var main = GlobalReferences.main
 
 
-@onready var repeater: Sprite2D = $Repeater
+@onready var shotgun: Sprite2D = $Shotgun
 
 @onready var hand: Sprite2D = $Hand
 
@@ -19,18 +19,19 @@ enum {
 
 
 
-var shootSpeed = 0.65
+var shootSpeed = 0.45
 var bulletDirection = Vector2(1,0)
 var FRICITON = 300
 var bullet = preload("res://Weapons/bullet.tscn")
+@export var bulletSpeed : float
 var states
 var shootable = true
 var lassoed = false
+var pellets : int = 6
 var group_name : String
 @export var weapon_reload_speed = 0.6
-@export var bulletSpeed : float
-@export var random_spread : float
 @export var weapon_damage : float
+@export var random_spread : float
 
 func _ready() -> void:
 	states = OnGround
@@ -40,8 +41,8 @@ func _physics_process(delta: float) -> void:
 	match states:
 		OnGround:
 			hand.visible = false
-			repeater.frame = 0
-			repeater.scale = Vector2(0.5, 0.5)
+			shotgun.frame = 0
+			shotgun.scale = Vector2(0.5, 0.5)
 			pickup.monitorable = true
 			pickup.monitoring = true
 			pickup.add_to_group("item")
@@ -54,8 +55,8 @@ func _physics_process(delta: float) -> void:
 			if lasso_endnode.is_in_group("Lassoed"):
 				SignalHandler.cancelledAbility.emit()
 			hand.visible = true
-			repeater.frame = 1
-			repeater.scale = Vector2(1, 1)
+			shotgun.frame = 1
+			shotgun.scale = Vector2(1, 1)
 			pickup.monitorable = false
 			pickup.monitoring = false
 			pickup.remove_from_group("item")
@@ -74,6 +75,7 @@ func droppedWeapon():
 	states = OnGround
 
 func get_bullet_type():
+	print(get_meta("AmmoType"))
 	return get_meta("AmmoType")
 	
 func reload(ammo):
@@ -86,15 +88,15 @@ func shoot():
 		shootable = false
 		$ShootSpeedTimer.start(shootSpeed)
 		ammunition_component.shot()
-		var bulletInstance = bullet.instantiate()
-		main.add_child.call_deferred(bulletInstance)
-		bulletInstance.add_to_group(group_name)
-		bulletInstance.global_position = $Marker2D.global_position
-		bulletInstance.global_rotation = $Marker2D.global_rotation + randf_range(-random_spread, random_spread)
-		bulletInstance.damage = weapon_damage
-		bulletInstance.knockback = 14.0
-		bulletInstance.speed = bulletSpeed
-		print(ammunition_component.ammo)
+		for i in pellets:
+			var bulletInstance = bullet.instantiate()
+			main.add_child.call_deferred(bulletInstance)
+			bulletInstance.add_to_group(group_name)
+			bulletInstance.global_position = $Marker2D.global_position
+			bulletInstance.global_rotation = $Marker2D.global_rotation + randf_range(-random_spread, random_spread)
+			bulletInstance.speed = bulletSpeed + randf_range(-50, 25)
+			bulletInstance.damage = weapon_damage
+			bulletInstance.knockback = 4.0
 		
 		
 
