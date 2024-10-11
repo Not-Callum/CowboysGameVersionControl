@@ -2,14 +2,23 @@ extends Marker2D
 
 @onready var main = GlobalReferences.main
 
+var current_enemy
+
 var enemy = preload("res://Enemies/enemy.tscn") 
 var revolver = load("res://Weapons/revolver.tscn")
 var repeater = load("res://Weapons/repeater.tscn")
 var shotgun = load("res://Weapons/Shotgun/shotgun.tscn")
 
 func _ready() -> void:
+	if current_enemy == null:
+		spawnEnemy()
 	randomize()
-	spawnEnemy()
+	
+func _physics_process(delta: float) -> void:
+	if current_enemy == null:
+		current_enemy = "preparing"
+		await get_tree().create_timer(5).timeout
+		spawnEnemy()
 
 func spawnEnemy():
 	var weapon = randomise_weapon()
@@ -17,6 +26,7 @@ func spawnEnemy():
 	get_parent().add_child.call_deferred(newEnemy)
 	newEnemy.global_position = global_position
 	newEnemy.give_weapon.call_deferred(weapon)
+	current_enemy = newEnemy
 
 func randomise_weapon():
 	var random = randf_range(0, 1)

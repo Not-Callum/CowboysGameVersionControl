@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var SPEED = 140
+@export var SPEED = 165
 
 signal LassoCatch(target: CharacterBody2D)
 

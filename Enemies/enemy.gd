@@ -86,7 +86,7 @@ func _physics_process(delta: float) -> void:
 		animation_player.play("RESET")
 	
 	if soft_collision.is_colliding():
-		print("I am colliding softly")
+		
 		velocity += soft_collision.get_push_vector() * delta * 400
 	
 	enemy_look_at_player()
@@ -149,7 +149,6 @@ func persue_state(delta):
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICITON * delta)
 		
-	##decide to shoot here
 	
 	
 func seeking_setup():
@@ -169,7 +168,7 @@ func tied_state(delta):
 	
 	
 func yanked_state(delta):
-	#print(velocity.length())
+	
 	var collision_info = get_last_slide_collision()
 	
 	if collision_info:
@@ -181,12 +180,12 @@ func yanked_state(delta):
 		var tile_data := tilemap.get_cell_tile_data(tile_layer, tile_coords)
 		var is_wall = tile_data.get_custom_data("Terrain")
 		if is_wall == 1:
-			#print("hit wall")
+		
 			
 			if hitbox:
 				var attack = Attack.new()
 				attack.attack_damage = 150.0
-				#print(attack.attack_damage)
+				
 				hitbox.damage(attack)
 				state = STUNNED
 				
@@ -194,7 +193,6 @@ func yanked_state(delta):
 	state = IDLE
 	
 func stunned_state(delta):
-	print(state)
 	await get_tree().create_timer(0.3).timeout
 	target = get_tree().get_first_node_in_group("Player")
 	state = PERSUE
@@ -210,7 +208,6 @@ func _on_lasso_end_pulled_by_lasso() -> void:
 #func _on_player_search_area_body_entered(body: Node2D) -> void:
 	#
 	#if body.is_in_group("Player") and state != YANKED and state != TIED:
-		#print("body is player")
 		#target = body
 		#seeking_setup()
 		#state = PERSUE

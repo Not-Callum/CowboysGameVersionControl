@@ -186,8 +186,10 @@ func reload_weapon():
 
 func shoot_weapon():
 	var weapon = weapon_held.get_child(0)
-	weapon.shoot()
-	
+	if weapon.ammunition_component.ammo > 0:
+		weapon.shoot()
+	elif weapon.ammunition_component.ammo == 0:
+		reload_weapon()
 	
 	
 func addWeapon(weapon):
