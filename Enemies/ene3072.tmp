@@ -1,0 +1,167 @@
+[gd_scene load_steps=21 format=3 uid="uid://krbgn0hjnyhc"]
+
+[ext_resource type="Script" path="res://Enemies/enemy.gd" id="1_0v2t5"]
+[ext_resource type="Texture2D" uid="uid://bmlmycvri7yf6" path="res://Shadows/playershadow.png" id="2_6m5kg"]
+[ext_resource type="Texture2D" uid="uid://chq04ubu0xk5d" path="res://Enemies/BadGuy.png" id="2_y08v4"]
+[ext_resource type="PackedScene" uid="uid://b36m3hro7ugh4" path="res://Interactions/hurtbox.tscn" id="3_i4lxi"]
+[ext_resource type="PackedScene" uid="uid://bj46awucssf32" path="res://Interactions/hitbox.tscn" id="4_g2iw2"]
+[ext_resource type="PackedScene" uid="uid://cbc380nwix1tj" path="res://Player/Lasso/lasso_end.tscn" id="4_v6ex4"]
+[ext_resource type="PackedScene" uid="uid://dy6qvrqmpgbv3" path="res://Interactions/health_component.tscn" id="7_ddkdx"]
+[ext_resource type="Script" path="res://Enemies/player_search_area.gd" id="8_61yrn"]
+[ext_resource type="PackedScene" uid="uid://dsohsg27xjyo2" path="res://Interactions/soft_collision.tscn" id="8_crc88"]
+[ext_resource type="Script" path="res://Interactions/soft_collision.gd" id="9_jvaws"]
+
+[sub_resource type="Animation" id="Animation_2l3ng"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_pjwq8"]
+resource_name = "move"
+length = 0.4
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.122173, -0.122173, 0.122173]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h6405"]
+_data = {
+"RESET": SubResource("Animation_2l3ng"),
+"move": SubResource("Animation_pjwq8")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uvy37"]
+radius = 2.0
+height = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kk00f"]
+radius = 4.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lhgha"]
+radius = 4.0
+height = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vaqah"]
+size = Vector2(8, 1)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ajmqp"]
+radius = 4.0
+height = 17.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fsm5u"]
+radius = 66.0076
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cgswj"]
+radius = 2.0
+height = 8.0
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox") groups=["Enemy"]]
+y_sort_enabled = true
+collision_layer = 17
+collision_mask = 4
+script = ExtResource("1_0v2t5")
+hitbox = NodePath("Hitbox")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -9.53674e-07)
+texture = ExtResource("2_y08v4")
+hframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h6405")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_uvy37")
+
+[node name="Hurtbox" parent="." groups=["Enemy"] instance=ExtResource("3_i4lxi")]
+visible = false
+collision_layer = 17
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(7, 0)
+shape = SubResource("CircleShape2D_kk00f")
+
+[node name="Hitbox" parent="." node_paths=PackedStringArray("health_component") groups=["Enemy"] instance=ExtResource("4_g2iw2")]
+visible = true
+collision_layer = 35
+collision_mask = 4
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+shape = SubResource("CapsuleShape2D_lhgha")
+
+[node name="LassoEnd" parent="." groups=["Lassoable"] instance=ExtResource("4_v6ex4")]
+visibility_layer = 2
+
+[node name="CollisionShape2D" parent="LassoEnd" index="1"]
+shape = SubResource("RectangleShape2D_vaqah")
+
+[node name="Area2D" parent="LassoEnd" index="2"]
+collision_mask = 16
+
+[node name="CollisionShape2D" parent="LassoEnd/Area2D" index="0"]
+shape = SubResource("CapsuleShape2D_ajmqp")
+
+[node name="EnemyShadow" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-1, 2)
+texture = ExtResource("2_6m5kg")
+
+[node name="HealthComponent" parent="." instance=ExtResource("7_ddkdx")]
+MAX_HEALTH = 100.0
+
+[node name="Hand" type="Marker2D" parent="."]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="PlayerSearchArea" type="Area2D" parent="."]
+script = ExtResource("8_61yrn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerSearchArea"]
+shape = SubResource("CircleShape2D_fsm5u")
+
+[node name="SoftCollision" parent="." instance=ExtResource("8_crc88")]
+script = ExtResource("9_jvaws")
+
+[node name="CollisionShape2D" parent="SoftCollision" index="0"]
+position = Vector2(0, 3)
+shape = SubResource("CapsuleShape2D_cgswj")
+
+[node name="BreakFreeTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="CaughtByLasso" from="LassoEnd" to="." method="_on_lasso_end_caught_by_lasso"]
+[connection signal="PulledByLasso" from="LassoEnd" to="." method="_on_lasso_end_pulled_by_lasso"]
+[connection signal="body_entered" from="PlayerSearchArea" to="." method="_on_player_search_area_body_entered"]
+[connection signal="body_exited" from="PlayerSearchArea" to="." method="_on_player_search_area_body_exited"]
+[connection signal="timeout" from="BreakFreeTimer" to="." method="_on_break_free_timer_timeout"]
+
+[editable path="Hurtbox"]
+[editable path="Hitbox"]
+[editable path="LassoEnd"]
+[editable path="SoftCollision"]

@@ -9,6 +9,7 @@ class_name Player
 @onready var hitbox: Area2D = $Hitbox
 @onready var player_inventory: Node2D = $PlayerInventory
 @onready var lasso_timer: Timer = $LassoTimer
+@onready var health_component: HealthComponent = $HealthComponent
 
 signal LassoThrown
 signal Yanked()
@@ -41,6 +42,7 @@ func _ready() -> void:
 	hasWeapon = false
 	player_sprite.frame = 0
 	SignalHandler.Untied.connect(giveLasso)
+	health_component.hit.connect(health_changed)
 
 func _physics_process(delta: float) -> void:
 	match state:
@@ -121,6 +123,10 @@ func dodge_state(delta):
 	await get_tree().create_timer(0.5).timeout
 	state = MOVE
 	canShoot = true
+	
+func health_changed():
+	var health = health_component.health
+	SignalHandler.player_health_changed.emit(health)
 		
 	
 func trackMouse(mouse_rotation):
@@ -173,16 +179,19 @@ func throwWeapon():
 		#print("There was ", currentWeapon.howMuchAmmoInGun(), " in my gun")
 		
 func reload_weapon():
+	canShoot = false
 	var weapon = weapon_held.get_child(0)
 	if int(player_inventory.AmmoTypes[ammo_type]) >= (weapon.ammunition_component.MAX_AMMO - weapon.ammunition_component.ammo) and (weapon.ammunition_component.MAX_AMMO > weapon.ammunition_component.ammo):
 		var updated_ammo = weapon.ammunition_component.MAX_AMMO - weapon.ammunition_component.ammo
 		player_inventory.update_ammo_stored(ammo_type, -updated_ammo)
-		weapon.reload(updated_ammo)
+		await weapon.reload(updated_ammo)
+		canShoot = true
 		print("amount of ammo left , ", int(player_inventory.AmmoTypes[ammo_type]))
 	elif (weapon.ammunition_component.MAX_AMMO > weapon.ammunition_component.ammo) and int(player_inventory.AmmoTypes[ammo_type]) > 0:
 		var updated_ammo = int(player_inventory.AmmoTypes[ammo_type])
 		player_inventory.update_ammo_stored(ammo_type, -updated_ammo)
-		weapon.reload(updated_ammo)
+		await weapon.reload(updated_ammo)
+		canShoot = true
 
 func shoot_weapon():
 	var weapon = weapon_held.get_child(0)

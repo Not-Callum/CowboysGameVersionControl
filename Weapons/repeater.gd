@@ -21,6 +21,7 @@ enum {
 
 
 var shootSpeed = 0.65
+var reload_time = 1.5
 var bulletDirection = Vector2(1,0)
 var FRICITON = 300
 var bullet = preload("res://Weapons/bullet.tscn")
@@ -78,6 +79,7 @@ func get_bullet_type():
 	return get_meta("AmmoType")
 	
 func reload(ammo):
+	await get_tree().create_timer(reload_time).timeout
 	ammunition_component.reload(ammo)
 
 

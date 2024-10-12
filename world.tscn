@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dfp7e8hyjsv8p"]
+[gd_scene load_steps=14 format=3 uid="uid://dfp7e8hyjsv8p"]
 
 [ext_resource type="PackedScene" uid="uid://b66bum14lrhmo" path="res://Player/player.tscn" id="1_5gphn"]
 [ext_resource type="Script" path="res://world.gd" id="1_uy6ob"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b25oo2p083p11" path="res://Weapons/repeater.tscn" id="7_vw6q8"]
 [ext_resource type="PackedScene" uid="uid://den4py8urdr6h" path="res://Enemies/enemy_spawn_point.tscn" id="8_65tpu"]
 [ext_resource type="PackedScene" uid="uid://d0kconcmboikf" path="res://Weapons/Shotgun/shotgun.tscn" id="8_dvcyu"]
+[ext_resource type="PackedScene" uid="uid://dryt6khkh0go3" path="res://Enemies/health_orb.tscn" id="9_jdynx"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7bnar"]
 
@@ -167,6 +168,9 @@ position = Vector2(82, 21)
 
 [node name="Shotgun" parent="." instance=ExtResource("8_dvcyu")]
 position = Vector2(156, -35)
+
+[node name="HealthOrb" parent="." instance=ExtResource("9_jdynx")]
+position = Vector2(106, -69)
 
 [connection signal="LassoThrown" from="Player" to="." method="_on_player_lasso_thrown"]
 

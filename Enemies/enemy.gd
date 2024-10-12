@@ -29,6 +29,9 @@ var SPEED = 40
 var last_position = null
 var random_distance_offset = randi_range(-10, 10)
 var held_weapon
+
+var canShoot : bool = false
+
 enum {
 	IDLE,
 	MOVE,
@@ -233,7 +236,7 @@ func enemy_look_at_player():
 		hand.rotation = get_angle_to(final_aim_point) + deg_to_rad(target_velocity.x * 0.15)
 		check_hand_scale(target.global_position)
 		if held_weapon.shootable == true and held_weapon.ammunition_component.ammo > 0 and state != TIED and state != STUNNED and state != YANKED:
-			if global_position.distance_to(target.global_position) <= 120:
+			if global_position.distance_to(target.global_position) <= 120 and canShoot == true:
 				shoot()
 		elif held_weapon.ammunition_component.ammo == 0:
 			reload()
@@ -273,10 +276,13 @@ func give_weapon(weapon):
 		weaponInstance.weapon_damage = weaponInstance.weapon_damage * 0.5
 		weaponInstance.group_name = "Enemy"
 		held_weapon = weaponInstance
+		canShoot = true
 		
 		
 func shoot():
 	held_weapon.shoot()
 	
 func reload():
-	held_weapon.reload(held_weapon.ammunition_component.MAX_AMMO)
+	canShoot = false
+	await held_weapon.reload(held_weapon.ammunition_component.MAX_AMMO)
+	canShoot = true

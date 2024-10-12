@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dryt6khkh0go3"]
+
+[ext_resource type="Texture2D" uid="uid://bqh0wxn0ogvpv" path="res://Enemies/lifeorb.png" id="1_5ict5"]
+[ext_resource type="PackedScene" uid="uid://b36m3hro7ugh4" path="res://Interactions/hurtbox.tscn" id="2_3g4s5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bdow3"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t0u30"]
+radius = 4.0
+
+[node name="HealthOrb" type="CharacterBody2D" groups=["Enemy"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bdow3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_5ict5")
+
+[node name="Hurtbox" parent="." instance=ExtResource("2_3g4s5")]
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+shape = SubResource("CircleShape2D_t0u30")
+
+[editable path="Hurtbox"]

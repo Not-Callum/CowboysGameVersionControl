@@ -5,6 +5,7 @@ extends Node2D
 func _ready() -> void:
 	$Player.Yanked.connect(send_yank_to_lassoed)
 	#$Enemy.Untied.connect($Player.giveLasso)
+	SignalHandler.player_health_changed.connect(health_change)
 	
 	
 func send_yank_to_lassoed():
@@ -13,3 +14,5 @@ func send_yank_to_lassoed():
 			lassoedEnemy.get_pulled_to_player()
 			$Player.giveLasso
 			
+func health_change(health):
+	print(health)
