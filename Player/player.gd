@@ -43,6 +43,7 @@ func _ready() -> void:
 	player_sprite.frame = 0
 	SignalHandler.Untied.connect(giveLasso)
 	SignalHandler.healthPickedUp.connect(add_health)
+	SignalHandler.ammoPickedUp.connect(add_ammo)
 	health_component.hit.connect(health_changed)
 
 func _physics_process(delta: float) -> void:
@@ -180,6 +181,7 @@ func throwWeapon():
 		#print("There was ", currentWeapon.howMuchAmmoInGun(), " in my gun")
 		
 func reload_weapon():
+	print("Reloading!...")
 	canShoot = false
 	var weapon = weapon_held.get_child(0)
 	if int(player_inventory.AmmoTypes[ammo_type]) >= (weapon.ammunition_component.MAX_AMMO - weapon.ammunition_component.ammo) and (weapon.ammunition_component.MAX_AMMO > weapon.ammunition_component.ammo):
@@ -204,6 +206,8 @@ func shoot_weapon():
 func add_health(added_health):
 	health_component.heal(added_health)
 	
+func add_ammo(ammo_type, ammoAmount):
+	player_inventory.update_ammo_stored(ammo_type, ammoAmount)
 	
 func addWeapon(weapon):
 	

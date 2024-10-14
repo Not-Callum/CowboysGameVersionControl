@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dfp7e8hyjsv8p"]
+[gd_scene load_steps=15 format=3 uid="uid://dfp7e8hyjsv8p"]
 
 [ext_resource type="PackedScene" uid="uid://b66bum14lrhmo" path="res://Player/player.tscn" id="1_5gphn"]
 [ext_resource type="Script" path="res://world.gd" id="1_uy6ob"]
@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://d0kconcmboikf" path="res://Weapons/Shotgun/shotgun.tscn" id="8_dvcyu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7bnar"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jfpu5"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_stxh6"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -59,6 +61,7 @@ texture = ExtResource("2_nodgx")
 1:1/0 = 0
 1:1/0/terrain_set = 0
 1:1/0/terrain = 0
+1:1/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:1/0/terrains_peering_bit/right_side = 0
 1:1/0/terrains_peering_bit/bottom_right_corner = 0
 1:1/0/terrains_peering_bit/bottom_side = 0
@@ -68,6 +71,7 @@ texture = ExtResource("2_nodgx")
 1:1/0/terrains_peering_bit/top_side = 0
 1:1/0/terrains_peering_bit/top_right_corner = 0
 1:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_stxh6")
+1:1/0/custom_data_0 = 2
 2:1/0 = 0
 2:1/0/terrain_set = 0
 2:1/0/terrain = 0
@@ -108,6 +112,8 @@ texture = ExtResource("2_nodgx")
 [sub_resource type="TileSet" id="TileSet_mh74x"]
 physics_layer_0/collision_layer = 62
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_7bnar")
+physics_layer_1/collision_layer = 32
+physics_layer_1/physics_material = SubResource("PhysicsMaterial_jfpu5")
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.752697, 0.251686, 0.51746, 1)

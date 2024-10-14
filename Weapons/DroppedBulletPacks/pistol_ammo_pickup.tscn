@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwea434yoq5eh"]
+
+[ext_resource type="Texture2D" uid="uid://cwh3oo60wof70" path="res://Weapons/DroppedBulletPacks/pistol_ammo.png" id="1_qp70o"]
+[ext_resource type="Script" path="res://Weapons/DroppedBulletPacks/pistol_ammo_pickup.gd" id="1_vlxy0"]
+[ext_resource type="PackedScene" uid="uid://bb6sr1vlriytk" path="res://Interactions/collision_pickup.tscn" id="2_bomyd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8v4mx"]
+size = Vector2(8, 6)
+
+[node name="PistolAmmoPickup" type="CharacterBody2D"]
+script = ExtResource("1_vlxy0")
+metadata/AmmoType = "Pistol"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_8v4mx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qp70o")
+
+[node name="CollisionPickup" parent="." instance=ExtResource("2_bomyd")]

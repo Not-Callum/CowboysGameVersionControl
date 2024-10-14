@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://krbgn0hjnyhc"]
+[gd_scene load_steps=20 format=3 uid="uid://krbgn0hjnyhc"]
 
 [ext_resource type="Script" path="res://Enemies/enemy.gd" id="1_0v2t5"]
 [ext_resource type="Texture2D" uid="uid://bmlmycvri7yf6" path="res://Shadows/playershadow.png" id="2_6m5kg"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://dy6qvrqmpgbv3" path="res://Interactions/health_component.tscn" id="7_ddkdx"]
 [ext_resource type="Script" path="res://Enemies/player_search_area.gd" id="8_61yrn"]
 [ext_resource type="PackedScene" uid="uid://dsohsg27xjyo2" path="res://Interactions/soft_collision.tscn" id="8_crc88"]
-[ext_resource type="Script" path="res://Interactions/soft_collision.gd" id="9_jvaws"]
 
 [sub_resource type="Animation" id="Animation_2l3ng"]
 length = 0.001
@@ -145,7 +144,6 @@ script = ExtResource("8_61yrn")
 shape = SubResource("CircleShape2D_fsm5u")
 
 [node name="SoftCollision" parent="." instance=ExtResource("8_crc88")]
-script = ExtResource("9_jvaws")
 
 [node name="CollisionShape2D" parent="SoftCollision" index="0"]
 position = Vector2(0, 3)

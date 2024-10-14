@@ -11,5 +11,4 @@ func get_push_vector():
 		var area = areas[0]
 		push_vector = area.global_position.direction_to(global_position)
 		push_vector = push_vector.normalized()
-	print(push_vector)
 	return push_vector
