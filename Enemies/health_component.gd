@@ -7,9 +7,17 @@ var bloodSplatter = preload("res://Effects/blood_splatter.tscn")
 signal hit
 @export var MAX_HEALTH := 10.0
 var health: float
+var making_sure_I_only_die_once = 0
 
 func _ready() -> void:
 	health = MAX_HEALTH
+	
+func heal(add_health):
+	print(add_health)
+	if health < MAX_HEALTH:
+		health += add_health
+		if health > MAX_HEALTH:
+			health = MAX_HEALTH
 	
 	
 func damage(attack: Attack):
@@ -26,7 +34,9 @@ func damage(attack: Attack):
 			SignalHandler.doCameraShake.emit(4.0, 7.0)
 			emit_signal("hit")
 			if !myParent.is_in_group("Player"):
-				get_parent().queue_free()
+				#print("my parent is not a player!")
+				death_because_it_keeps_doing_it_more_than_once()
+				myParent.queue_free.call_deferred()
 				var bloodSplatter_instance = bloodSplatter.instantiate()
 				bloodSplatter_instance.global_position = global_position
 				main.add_child.call_deferred(bloodSplatter_instance)
@@ -44,4 +54,8 @@ func damage(attack: Attack):
 	
 	#velocity = (global_position - attack.attack_position).normalized() * attack.knockback_force
 	
+func death_because_it_keeps_doing_it_more_than_once():
 	
+	if making_sure_I_only_die_once < 1:
+		SignalHandler.EnemyDied.emit(self.global_position, myParent.die())
+		making_sure_I_only_die_once += 1

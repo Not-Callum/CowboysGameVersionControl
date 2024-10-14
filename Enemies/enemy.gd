@@ -183,8 +183,8 @@ func yanked_state(delta):
 		var tile_data := tilemap.get_cell_tile_data(tile_layer, tile_coords)
 		var is_wall = tile_data.get_custom_data("Terrain")
 		if is_wall == 1:
-		
-			
+			#print("the velocity is ", + getTotalVelocity())
+			getTotalVelocity()
 			if hitbox:
 				var attack = Attack.new()
 				attack.attack_damage = 150.0
@@ -272,7 +272,7 @@ func give_weapon(weapon):
 		weaponInstance.pickedUp.call_deferred()
 		weaponInstance.bulletSpeed = weaponInstance.bulletSpeed / 2
 		weaponInstance.random_spread = weaponInstance.random_spread * 2
-		weaponInstance.shootSpeed = 1
+		weaponInstance.shootSpeed = 1.6
 		weaponInstance.weapon_damage = weaponInstance.weapon_damage * 0.5
 		weaponInstance.group_name = "Enemy"
 		held_weapon = weaponInstance
@@ -282,7 +282,32 @@ func give_weapon(weapon):
 func shoot():
 	held_weapon.shoot()
 	
+func die():
+	var ammo_type = null
+	if hand.get_child_count() > 0:
+		ammo_type = hand.get_child(0).get_bullet_type()
+	return ammo_type
+	
+
 func reload():
 	canShoot = false
 	await held_weapon.reload(held_weapon.ammunition_component.MAX_AMMO)
 	canShoot = true
+
+
+#this is experimental, what I originally wanted but i dont know if it works as I'd wish (one of the values is ALWAYS 0 for some reason)
+func getTotalVelocity():
+	var velX = 0
+	var velY = 0
+	if velocity.x < 0:
+		velX = velocity.x * -1
+	else:
+		velX = velocity.x
+	if velocity.y < 0:
+		velY = velocity.y * -1
+	else:
+		velY = velocity.y
+	print(velX)
+	print(velY)
+	var final_vel = velX + velY  
+	return final_vel

@@ -75,7 +75,6 @@ func get_bullet_type():
 	return get_meta("AmmoType")
 	
 func reload(ammo):
-	print("I am reloading with ", ammo)
 	await get_tree().create_timer(reload_time).timeout
 	ammunition_component.reload(ammo)
 	

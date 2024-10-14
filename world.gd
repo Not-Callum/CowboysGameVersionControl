@@ -15,4 +15,5 @@ func send_yank_to_lassoed():
 			$Player.giveLasso
 			
 func health_change(health):
-	print(health)
+	pass
+	#print(health)

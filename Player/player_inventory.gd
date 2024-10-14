@@ -10,7 +10,7 @@ func _ready() -> void:
 		var currentAmmo = int(AmmoTypes[ammoKeys[i]])
 		var newAmmo = currentAmmo + 15
 		AmmoTypes[ammoKeys[i]] = newAmmo
-	print(AmmoTypes.values())
+	
 	
 func _process(delta: float) -> void:
 	pass
@@ -19,3 +19,4 @@ func update_ammo_stored(ammoType, amount):
 	var currentAmmo = int(AmmoTypes[ammoType])
 	var newAmmo = currentAmmo + amount
 	AmmoTypes[ammoType] = newAmmo
+	

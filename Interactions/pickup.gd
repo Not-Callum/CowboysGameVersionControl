@@ -10,7 +10,7 @@ signal PickedUp
 
 func _ready() -> void:
 	highlight.visible = false
-	await get_tree().create_timer(2).timeout
+	#await get_tree().create_timer(2).timeout
 	canPickup = true
 	
 func _process(delta: float) -> void:

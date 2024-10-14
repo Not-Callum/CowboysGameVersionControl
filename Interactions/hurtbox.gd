@@ -2,7 +2,7 @@ extends Area2D
 
 
 
-var damage = -20
+var damage = -30
 
 
 func _on_area_entered(area: Area2D) -> void:

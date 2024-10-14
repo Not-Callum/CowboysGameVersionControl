@@ -42,6 +42,7 @@ func _ready() -> void:
 	hasWeapon = false
 	player_sprite.frame = 0
 	SignalHandler.Untied.connect(giveLasso)
+	SignalHandler.healthPickedUp.connect(add_health)
 	health_component.hit.connect(health_changed)
 
 func _physics_process(delta: float) -> void:
@@ -199,6 +200,9 @@ func shoot_weapon():
 		weapon.shoot()
 	elif weapon.ammunition_component.ammo == 0:
 		reload_weapon()
+		
+func add_health(added_health):
+	health_component.heal(added_health)
 	
 	
 func addWeapon(weapon):

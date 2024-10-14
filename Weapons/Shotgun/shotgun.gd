@@ -77,7 +77,6 @@ func droppedWeapon():
 	states = OnGround
 
 func get_bullet_type():
-	print(get_meta("AmmoType"))
 	return get_meta("AmmoType")
 	
 func reload(ammo):

@@ -3,12 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://b66bum14lrhmo" path="res://Player/player.tscn" id="1_5gphn"]
 [ext_resource type="Script" path="res://world.gd" id="1_uy6ob"]
 [ext_resource type="Texture2D" uid="uid://ckholobpl8ytk" path="res://World/saloontileset.png" id="2_nodgx"]
+[ext_resource type="PackedScene" uid="uid://b3ukxns30f5qu" path="res://Scripts/item_manager.tscn" id="2_vgpwf"]
 [ext_resource type="Script" path="res://camera_2d.gd" id="3_vcboc"]
 [ext_resource type="PackedScene" uid="uid://cen2ju3yrkasi" path="res://Weapons/revolver.tscn" id="6_unbx1"]
 [ext_resource type="PackedScene" uid="uid://b25oo2p083p11" path="res://Weapons/repeater.tscn" id="7_vw6q8"]
 [ext_resource type="PackedScene" uid="uid://den4py8urdr6h" path="res://Enemies/enemy_spawn_point.tscn" id="8_65tpu"]
 [ext_resource type="PackedScene" uid="uid://d0kconcmboikf" path="res://Weapons/Shotgun/shotgun.tscn" id="8_dvcyu"]
-[ext_resource type="PackedScene" uid="uid://dryt6khkh0go3" path="res://Enemies/health_orb.tscn" id="9_jdynx"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7bnar"]
 
@@ -120,6 +120,8 @@ sources/0 = SubResource("TileSetAtlasSource_4458d")
 y_sort_enabled = true
 script = ExtResource("1_uy6ob")
 
+[node name="Item Manager" parent="." instance=ExtResource("2_vgpwf")]
+
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -5
 y_sort_enabled = true
@@ -168,9 +170,6 @@ position = Vector2(82, 21)
 
 [node name="Shotgun" parent="." instance=ExtResource("8_dvcyu")]
 position = Vector2(156, -35)
-
-[node name="HealthOrb" parent="." instance=ExtResource("9_jdynx")]
-position = Vector2(106, -69)
 
 [connection signal="LassoThrown" from="Player" to="." method="_on_player_lasso_thrown"]
 
