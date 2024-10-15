@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://dfp7e8hyjsv8p"]
+[gd_scene load_steps=16 format=3 uid="uid://dfp7e8hyjsv8p"]
 
 [ext_resource type="PackedScene" uid="uid://b66bum14lrhmo" path="res://Player/player.tscn" id="1_5gphn"]
 [ext_resource type="Script" path="res://world.gd" id="1_uy6ob"]
+[ext_resource type="PackedScene" uid="uid://duhnf4p80mdoe" path="res://World/UiControl.tscn" id="2_hbnhs"]
 [ext_resource type="Texture2D" uid="uid://ckholobpl8ytk" path="res://World/saloontileset.png" id="2_nodgx"]
 [ext_resource type="PackedScene" uid="uid://b3ukxns30f5qu" path="res://Scripts/item_manager.tscn" id="2_vgpwf"]
 [ext_resource type="Script" path="res://camera_2d.gd" id="3_vcboc"]
@@ -126,6 +127,8 @@ sources/0 = SubResource("TileSetAtlasSource_4458d")
 y_sort_enabled = true
 script = ExtResource("1_uy6ob")
 
+[node name="Control" parent="." instance=ExtResource("2_hbnhs")]
+
 [node name="Item Manager" parent="." instance=ExtResource("2_vgpwf")]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -179,5 +182,6 @@ position = Vector2(156, -35)
 
 [connection signal="LassoThrown" from="Player" to="." method="_on_player_lasso_thrown"]
 
+[editable path="Control"]
 [editable path="Player"]
 [editable path="Player/Hitbox"]

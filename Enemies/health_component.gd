@@ -13,17 +13,19 @@ func _ready() -> void:
 	health = MAX_HEALTH
 	
 func heal(add_health):
-	print(add_health)
 	if health < MAX_HEALTH:
 		health += add_health
 		if health > MAX_HEALTH:
 			health = MAX_HEALTH
+	SignalHandler.player_health_changed.emit(health)
 	
 	
 func damage(attack: Attack):
 	#print(attack.attack_damage)
 	if attack.attack_damage > 0:
 		health -= attack.attack_damage
+		if myParent.is_in_group("Player"):
+			SignalHandler.player_health_changed.emit(health)
 		var direction = global_position - attack.attack_position
 		myParent.velocity = myParent.velocity + (direction * attack.knockback_force)
 		if health > 0:
@@ -41,6 +43,7 @@ func damage(attack: Attack):
 				bloodSplatter_instance.global_position = global_position
 				main.add_child.call_deferred(bloodSplatter_instance)
 			else:
+				SignalHandler.player_health_changed.emit(health)
 				myParent.visible = false
 				myParent.die()
 	elif attack.attack_damage < 0:
