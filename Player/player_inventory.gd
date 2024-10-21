@@ -25,5 +25,7 @@ func update_ammo_stored(ammoType, amount):
 	print(AmmoTypes)
 	
 func get_ammo_stored(ammotype):
-	player_inventory_ammo_changed.emit(AmmoTypes[ammotype])
-	
+	if ammotype != null:
+		player_inventory_ammo_changed.emit(AmmoTypes[ammotype])
+	else:
+		player_inventory_ammo_changed.emit(null)

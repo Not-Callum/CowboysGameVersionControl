@@ -1,5 +1,5 @@
 extends Node2D
-@onready var control: CanvasLayer = $Control
+@onready var control: CanvasLayer = $UiControl
 
 
 

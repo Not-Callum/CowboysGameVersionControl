@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var SPEED = 165
+@export var SPEED = 200
 
 signal LassoCatch(target: CharacterBody2D)
 
@@ -8,7 +8,7 @@ signal LassoCatch(target: CharacterBody2D)
 var lineDraw = preload("res://Effects/draw_line.tscn")
 
 
-var airFriction = 200
+var airFriction = 400
 
 func _ready() -> void:
 	var linedraw_instance = lineDraw.instantiate()

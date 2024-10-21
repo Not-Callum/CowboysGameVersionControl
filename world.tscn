@@ -127,7 +127,7 @@ sources/0 = SubResource("TileSetAtlasSource_4458d")
 y_sort_enabled = true
 script = ExtResource("1_uy6ob")
 
-[node name="Control" parent="." instance=ExtResource("2_hbnhs")]
+[node name="UiControl" parent="." instance=ExtResource("2_hbnhs")]
 
 [node name="Item Manager" parent="." instance=ExtResource("2_vgpwf")]
 
@@ -182,6 +182,6 @@ position = Vector2(156, -35)
 
 [connection signal="LassoThrown" from="Player" to="." method="_on_player_lasso_thrown"]
 
-[editable path="Control"]
+[editable path="UiControl"]
 [editable path="Player"]
 [editable path="Player/Hitbox"]

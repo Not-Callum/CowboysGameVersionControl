@@ -11,7 +11,6 @@ func _ready() -> void:
 	collision_pickup.PickedUp.connect(give_ammo_to_player)
 	
 func give_ammo_to_player():
-	ammo_to_pickup = randi_range(5, 15)
-	print(ammo_to_pickup)
+	ammo_to_pickup = randi_range(2, 8)
 	SignalHandler.ammoPickedUp.emit(ammotype, ammo_to_pickup)
 	queue_free.call_deferred()

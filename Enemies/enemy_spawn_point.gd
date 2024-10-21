@@ -31,10 +31,9 @@ func spawnEnemy():
 func randomise_weapon():
 	var random = randf_range(0, 1)
 	print(random)
-	if random <= 0.5:
+	if random <= 0.6:
 		return revolver
-	elif random > 0.5 and random <= 0.75:
+	elif random > 0.6 and random <= 0.85:
 		return repeater
 	else:
 		return shotgun
-#and random >= 0.8:

@@ -161,6 +161,7 @@ func throwLasso():
 	var lasso_instance = lasso.instantiate()
 	lasso_instance.rotation = weapon_held.rotation
 	lasso_instance.global_position = weapon_held.global_position
+	lasso_instance.velocity += self.velocity
 	main.add_child.call_deferred(lasso_instance)
 	
 	
@@ -203,6 +204,7 @@ func reload_weapon():
 		await weapon.reload(updated_ammo)
 		send_ammo_in_weapon()
 		canShoot = true
+	player_inventory.get_ammo_stored(my_ammo_type)
 
 func shoot_weapon():
 	var weapon = weapon_held.get_child(0)
