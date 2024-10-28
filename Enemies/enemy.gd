@@ -55,6 +55,11 @@ func _ready() -> void:
 	
 
 func _physics_process(delta: float) -> void:
+	if sprite_2d.scale != Vector2(1, 1):
+		sprite_2d.scale.x = move_toward(sprite_2d.scale.x, 1, 1 * delta)
+		sprite_2d.scale.y = move_toward(sprite_2d.scale.y, 1, 1 * delta)
+	else:
+		pass
 	
 	if player_search_area.get_overlapping_bodies() and state != YANKED and state != TIED and state != STUNNED:
 		var bodies = player_search_area.get_overlapping_bodies()
@@ -163,7 +168,7 @@ func just_caught_by_lasso():
 	break_free_timer.start(randi_range(4,12))
 	
 func got_shot():
-	
+	sprite_2d.scale = Vector2(0.85, 1.25)
 	state = STUNNED
 
 func tied_state(delta):
@@ -188,7 +193,8 @@ func yanked_state(delta):
 			if hitbox:
 				var attack = Attack.new()
 				attack.attack_damage = 150.0
-				
+				attack.attack_position = tile_coords
+				attack.attack_source = "Lasso"
 				hitbox.damage(attack)
 				state = STUNNED
 				
@@ -283,6 +289,7 @@ func shoot():
 	held_weapon.shoot()
 	
 func die():
+	
 	var ammo_type = null
 	if hand.get_child_count() > 0:
 		ammo_type = hand.get_child(0).get_bullet_type()

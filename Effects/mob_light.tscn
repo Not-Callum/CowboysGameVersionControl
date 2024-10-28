@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://tftv46acpqiv"]
+
+[ext_resource type="Texture2D" uid="uid://d1gisy7cgqli4" path="res://Effects/light.png" id="1_83yh4"]
+
+[node name="MobLight" type="PointLight2D"]
+visible = false
+z_index = 1
+enabled = false
+color = Color(0.923707, 0.94, 0.8648, 1)
+energy = 0.1
+texture = ExtResource("1_83yh4")
+texture_scale = 0.4

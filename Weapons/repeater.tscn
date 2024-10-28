@@ -71,6 +71,7 @@ position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_axqsj")
 
 [node name="Repeater" type="Sprite2D" parent="."]
+light_mask = 2
 texture = ExtResource("2_78mcc")
 hframes = 2
 frame = 1

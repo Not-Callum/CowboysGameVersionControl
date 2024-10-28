@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b66bum14lrhmo"]
+[gd_scene load_steps=17 format=3 uid="uid://b66bum14lrhmo"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_gcrc1"]
 [ext_resource type="Texture2D" uid="uid://bmlmycvri7yf6" path="res://Shadows/playershadow.png" id="2_mnc1v"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Player/interact_area.gd" id="5_hv8ie"]
 [ext_resource type="PackedScene" uid="uid://dy6qvrqmpgbv3" path="res://Interactions/health_component.tscn" id="6_6b7mg"]
 [ext_resource type="Script" path="res://Player/player_inventory.gd" id="7_pj102"]
+[ext_resource type="PackedScene" uid="uid://tftv46acpqiv" path="res://Effects/mob_light.tscn" id="8_nvx23"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mv80b"]
 radius = 2.0
@@ -75,6 +76,9 @@ height = 14.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_nyadd"]
 radius = 15.0
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g1y8a"]
+polygon = PackedVector2Array(-3, 7, 2, 7, 2, 6, -3, 6)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 collision_mask = 2
@@ -86,6 +90,7 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_mv80b")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+light_mask = 2
 texture = ExtResource("2_xog45")
 hframes = 3
 
@@ -128,6 +133,13 @@ script = ExtResource("7_pj102")
 
 [node name="LassoTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="MobLight" parent="." instance=ExtResource("8_nvx23")]
+visible = true
+position = Vector2(-1, 0)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_g1y8a")
 
 [connection signal="area_entered" from="InteractArea" to="InteractArea" method="_on_area_entered"]
 [connection signal="area_exited" from="InteractArea" to="InteractArea" method="_on_area_exited"]

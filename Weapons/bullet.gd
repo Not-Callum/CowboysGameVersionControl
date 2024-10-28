@@ -32,6 +32,7 @@ func _on_area_entered(area: Area2D) -> void:
 		attack.attack_damage = damage
 		attack.knockback_force = knockback
 		attack.attack_position = global_position
+		attack.attack_source = "Bullet"
 		
 		area.damage(attack)
 		queue_free()

@@ -37,7 +37,7 @@ func damage(attack: Attack):
 			emit_signal("hit")
 			if !myParent.is_in_group("Player"):
 				#print("my parent is not a player!")
-				death_because_it_keeps_doing_it_more_than_once()
+				death_because_it_keeps_doing_it_more_than_once(attack.attack_source)
 				myParent.queue_free.call_deferred()
 				var bloodSplatter_instance = bloodSplatter.instantiate()
 				bloodSplatter_instance.global_position = global_position
@@ -57,8 +57,9 @@ func damage(attack: Attack):
 	
 	#velocity = (global_position - attack.attack_position).normalized() * attack.knockback_force
 	
-func death_because_it_keeps_doing_it_more_than_once():
+func death_because_it_keeps_doing_it_more_than_once(source):
 	
 	if making_sure_I_only_die_once < 1:
-		SignalHandler.EnemyDied.emit(self.global_position, myParent.die())
+		SignalHandler.EnemyDied.emit(self.global_position, myParent.die(), source)
+		SignalHandler.SpawnPointAvailable.emit(4)
 		making_sure_I_only_die_once += 1

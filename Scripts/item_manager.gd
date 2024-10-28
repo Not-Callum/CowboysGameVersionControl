@@ -8,9 +8,19 @@ const life_orb = preload("res://Enemies/health_orb.tscn")
 func _ready() -> void:
 	SignalHandler.EnemyDied.connect(handle_enemy_death)
 	
-func handle_enemy_death(enemyPos, ammo_type):
-	spawn_life_orb(enemyPos)
-	spawn_ammo_pack(ammo_type, enemyPos)
+func handle_enemy_death(enemyPos, ammo_type, source):
+	if source != "Lasso":
+		if randomized_output(1,3) > 1:
+			spawn_life_orb(enemyPos)
+		else:
+			pass
+		if randomized_output(1,3) == 1:
+			spawn_ammo_pack(ammo_type, enemyPos)
+		else:
+			pass
+	else:
+		spawn_life_orb(enemyPos)
+		spawn_ammo_pack(ammo_type, enemyPos)
 	
 func spawn_ammo_pack(ammo_type, enemyPos):
 	if ammo_type == "Pistol":
@@ -32,3 +42,6 @@ func spawn_life_orb(enemyPos):
 	var life_orb_instance = life_orb.instantiate()
 	main.add_child.call_deferred(life_orb_instance)
 	life_orb_instance.global_position = enemyPos
+	
+func randomized_output(x,y):
+	return randi_range(x,y)

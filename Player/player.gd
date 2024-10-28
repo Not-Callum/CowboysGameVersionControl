@@ -29,6 +29,7 @@ var LASSOCOOLDOWN = true
 var lasso = preload("res://Interactions/lasso_throw.tscn")
 var dodge_vector = Vector2.RIGHT
 
+var reloading : bool = false
 var weapon_to_drop
 var weapon_to_spawn
 var hasWeapon : bool
@@ -111,12 +112,10 @@ func _input(event: InputEvent) -> void:
 		throwWeapon()
 	if Input.is_action_just_pressed("dodge"):
 		state = DODGE
-	if Input.is_action_just_released("reload") and hasWeapon == true and canShoot == true:
+	if Input.is_action_just_released("reload") and hasWeapon == true and canShoot == true and reloading == false:
 		var weapon = weapon_held.get_child(0)
 		if weapon.ammunition_component.ammo < weapon.ammunition_component.MAX_AMMO:
-			print("reloading")
 			reload_weapon()
-			print("reloaded")
 		
 func dodge_state(delta):
 	canShoot = false
@@ -167,10 +166,11 @@ func throwLasso():
 	
 func giveLasso():
 	await get_tree().create_timer(0.5).timeout
-	print("give lasso")
-	LASSOEQUIPPED = true
-	MAX_SPEED = 50
-	DODGE_SPEED = 100
+	if LASSOEQUIPPED == false:
+		print("give lasso")
+		LASSOEQUIPPED = true
+		MAX_SPEED = 50
+		DODGE_SPEED = 100
 	
 func throwWeapon():
 	if hasWeapon == true:
@@ -187,8 +187,8 @@ func throwWeapon():
 		#print("There was ", currentWeapon.howMuchAmmoInGun(), " in my gun")
 		
 func reload_weapon():
+	reloading = true
 	canShoot = false
-	print("Reloading!...")
 	var weapon = weapon_held.get_child(0)
 	await get_tree().create_timer(reload_speed).timeout
 	if int(player_inventory.AmmoTypes[my_ammo_type]) >= (weapon.ammunition_component.MAX_AMMO - weapon.ammunition_component.ammo) and (weapon.ammunition_component.MAX_AMMO > weapon.ammunition_component.ammo):
@@ -196,25 +196,25 @@ func reload_weapon():
 		player_inventory.update_ammo_stored(my_ammo_type, -updated_ammo)
 		await weapon.reload(updated_ammo)
 		canShoot = true
+		reloading = false
 		send_ammo_in_weapon()
-		print("amount of ammo left , ", int(player_inventory.AmmoTypes[my_ammo_type]))
 	elif (weapon.ammunition_component.MAX_AMMO > weapon.ammunition_component.ammo) and int(player_inventory.AmmoTypes[my_ammo_type]) > 0:
 		var updated_ammo = int(player_inventory.AmmoTypes[my_ammo_type])
 		player_inventory.update_ammo_stored(my_ammo_type, -updated_ammo)
 		await weapon.reload(updated_ammo)
 		send_ammo_in_weapon()
 		canShoot = true
+		reloading = false
 	player_inventory.get_ammo_stored(my_ammo_type)
 
 func shoot_weapon():
 	var weapon = weapon_held.get_child(0)
 	if weapon.ammunition_component.ammo > 0:
 		weapon.shoot()
-	elif weapon.ammunition_component.ammo == 0 and hasWeapon == true and canShoot == true:
-		if weapon.ammunition_component.ammo < weapon.ammunition_component.MAX_AMMO:
-			print("reloading")
+	elif weapon.ammunition_component.ammo == 0:
+		if weapon.ammunition_component.ammo < weapon.ammunition_component.MAX_AMMO and !reloading:
 			reload_weapon()
-			print("reloaded")
+			print("reload registered by shoot")
 		
 	send_ammo_in_weapon()
 		

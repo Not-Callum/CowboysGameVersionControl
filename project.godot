@@ -36,6 +36,7 @@ Enemy=""
 Player=""
 LassoJoint=""
 item=""
+EnemySpawnPoints=""
 
 [input]
 

@@ -1,0 +1,64 @@
+[gd_scene load_steps=11 format=3 uid="uid://c1kqo38u7g0bn"]
+
+[ext_resource type="Script" path="res://Enemies/Grenadier/grenadier.gd" id="1_ks8bl"]
+[ext_resource type="Texture2D" uid="uid://hfbp4t44l6eu" path="res://Enemies/Grenadier/dynamiteEnemy.png" id="2_73xip"]
+[ext_resource type="PackedScene" uid="uid://bj46awucssf32" path="res://Interactions/hitbox.tscn" id="3_vqhby"]
+[ext_resource type="PackedScene" uid="uid://cbc380nwix1tj" path="res://Player/Lasso/lasso_end.tscn" id="4_0unjd"]
+[ext_resource type="Texture2D" uid="uid://bmlmycvri7yf6" path="res://Shadows/playershadow.png" id="5_xyugj"]
+[ext_resource type="PackedScene" uid="uid://dy6qvrqmpgbv3" path="res://Interactions/health_component.tscn" id="6_p518v"]
+[ext_resource type="PackedScene" uid="uid://dsohsg27xjyo2" path="res://Interactions/soft_collision.tscn" id="7_u5jt8"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nhbn3"]
+radius = 1.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fqywg"]
+radius = 4.0
+height = 14.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wp233"]
+radius = 4.0
+height = 15.0
+
+[node name="Grenadier" type="CharacterBody2D"]
+script = ExtResource("1_ks8bl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_73xip")
+hframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_nhbn3")
+
+[node name="Hitbox" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_vqhby")]
+visible = true
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+shape = SubResource("CapsuleShape2D_fqywg")
+
+[node name="LassoEnd" parent="." groups=["Lassoable"] instance=ExtResource("4_0unjd")]
+position = Vector2(0, 2)
+
+[node name="Area2D" parent="LassoEnd" index="2"]
+collision_mask = 16
+
+[node name="CollisionShape2D" parent="LassoEnd/Area2D" index="0"]
+position = Vector2(0, -2)
+shape = SubResource("CapsuleShape2D_wp233")
+
+[node name="GrenadierShadow" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-1, 1)
+texture = ExtResource("5_xyugj")
+
+[node name="HealthComponent" parent="." instance=ExtResource("6_p518v")]
+
+[node name="SoftCollision" parent="." instance=ExtResource("7_u5jt8")]
+
+[editable path="Hitbox"]
+[editable path="LassoEnd"]

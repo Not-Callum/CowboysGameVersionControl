@@ -67,6 +67,7 @@ metadata/AmmoType = "Shotgun"
 position = Vector2(7, 0)
 
 [node name="Shotgun" type="Sprite2D" parent="."]
+light_mask = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_iutki")
 hframes = 2

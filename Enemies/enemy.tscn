@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://krbgn0hjnyhc"]
+[gd_scene load_steps=22 format=3 uid="uid://krbgn0hjnyhc"]
 
 [ext_resource type="Script" path="res://Enemies/enemy.gd" id="1_0v2t5"]
 [ext_resource type="Texture2D" uid="uid://bmlmycvri7yf6" path="res://Shadows/playershadow.png" id="2_6m5kg"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dy6qvrqmpgbv3" path="res://Interactions/health_component.tscn" id="7_ddkdx"]
 [ext_resource type="Script" path="res://Enemies/player_search_area.gd" id="8_61yrn"]
 [ext_resource type="PackedScene" uid="uid://dsohsg27xjyo2" path="res://Interactions/soft_collision.tscn" id="8_crc88"]
+[ext_resource type="PackedScene" uid="uid://tftv46acpqiv" path="res://Effects/mob_light.tscn" id="10_o3e72"]
 
 [sub_resource type="Animation" id="Animation_2l3ng"]
 length = 0.001
@@ -73,6 +74,9 @@ radius = 66.0076
 radius = 2.0
 height = 8.0
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2hjdg"]
+polygon = PackedVector2Array(-3, 7, -3, 6, 2, 6, 2, 7)
+
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox") groups=["Enemy"]]
 y_sort_enabled = true
 collision_layer = 17
@@ -81,6 +85,7 @@ script = ExtResource("1_0v2t5")
 hitbox = NodePath("Hitbox")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+light_mask = 2
 position = Vector2(0, -9.53674e-07)
 texture = ExtResource("2_y08v4")
 hframes = 2
@@ -151,6 +156,12 @@ shape = SubResource("CapsuleShape2D_cgswj")
 
 [node name="BreakFreeTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="MobLight" parent="." instance=ExtResource("10_o3e72")]
+color = Color(0.96, 0.7488, 0.78752, 0.909804)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_2hjdg")
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="CaughtByLasso" from="LassoEnd" to="." method="_on_lasso_end_caught_by_lasso"]

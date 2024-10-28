@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjy5yk00ugk3d"]
+
+[ext_resource type="Texture2D" uid="uid://d1gisy7cgqli4" path="res://Effects/light.png" id="1_gs6r6"]
+
+[node name="RoomLight" type="Node2D"]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 1.2
+blend_mode = 2
+range_item_cull_mask = 2
+texture = ExtResource("1_gs6r6")
+texture_scale = 0.8
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+energy = 1.2
+blend_mode = 2
+shadow_enabled = true
+shadow_color = Color(0.58, 0.38773, 0.2842, 0.054902)
+texture = ExtResource("1_gs6r6")
+texture_scale = 0.8
