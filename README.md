@@ -2,8 +2,19 @@ This game is, so far, a prototype of an idea I had regarding the lasso mechanic.
 
 The weapons system was my first time doing something like that, I started off with having two variations/scenes of a weapon, one being on the floor and one being in the players hands and it would instantiate when transitioning between the two. However, I then realised a few problems with transferring data about the weapon and how much ammunition is has between these "states" so I made it into one item which is easier to implement and maintain. This means I could keep some data between the states and could also as easily give the weapons to my enemies. The enemy's ammo drops that spawn are dependant on what weapon the enemy has, which was a useful exploration of using metadata. Currently I am working on a "grenadier" who will throw dynamite at the player, the dynamite being lassoable objects that you can then throw back to the enemies. I thought this would be a fun idea as it once again incentivises a use-case for the lasso I worked hard on and gives a fun high risk, high reward counter to this new enemy type. However, that is not fully implemented yet.
 
-My future for this project would be to turn it into a "rougelike" game, as I can see what I have already built suiting that genre greatly and gives it a unique gimick that would distinguish itself from other games.
+My future for this project would be to turn it into a "rougelike" game, as I can see what I have already built suiting that genre greatly and gives it a unique gimick that would distinguish itself from other games. Things I still need to do include: audio, menus, a goal/gameplay loop, more variety in enemies and environments.
 
+Using the lasso on a weapon, and then picking up the weapon:
+![LassoAndPickup](https://github.com/user-attachments/assets/e7354ab9-e8a3-4ee5-ad9a-bb39677fe490)
+
+Defeating and enemy with the lasso:
+![LassoKill](https://github.com/user-attachments/assets/c4e77cf2-9b98-4011-98f3-dfff0648d31f)
+
+Dodging bullets:
+![Dodge](https://github.com/user-attachments/assets/ad2860db-1792-4b49-a2fc-98ef5bfed259)
+
+Ememy escaping the lasso:
+![LassoEscape](https://github.com/user-attachments/assets/ddb1bccf-8876-40de-9b58-a701d2136e70)
 
 Controls:
 WASD - move
